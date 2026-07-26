@@ -5,6 +5,7 @@ import { eudoxusSans } from "./fonts";
 import Script from "next/script";
 import { IconSprite } from "@/components/utility/IconSprite";
 import { Preloader } from "@/components/Preloader";
+import { Header } from "@/components/Header";
 
 const baseURL =
   process.env.NEXT_PUBLIC_BASE_URL || "https://www.omkapandentalktm.com.np";
@@ -164,6 +165,7 @@ export default function RootLayout({
       >
         <IconSprite />
         <Preloader />
+        <Header />
         {children}
         <AnalyticsWrapper />
       </body>

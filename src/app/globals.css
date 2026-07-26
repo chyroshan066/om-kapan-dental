@@ -457,48 +457,8 @@ html {
   scroll-behavior: smooth;
 }
 
-@font-face {
-  font-family: "Eudoxus";
-
-  src: url(/fonts/eudoxus-sans/EudoxusSans-300.woff2) format(woff2);
-
-  font-weight: 300;
-
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Eudoxus";
-
-  src: url(/fonts/eudoxus-sans/EudoxusSans-400.woff2) format(woff2);
-
-  font-weight: 400;
-
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Eudoxus";
-
-  src: url(/fonts/eudoxus-sans/EudoxusSans-500.woff2) format(woff2);
-
-  font-weight: 500;
-
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Eudoxus";
-
-  src: url(/fonts/eudoxus-sans/EudoxusSans-700.woff2) format(woff2);
-
-  font-weight: 700;
-
-  font-display: swap;
-}
-
 body {
-  font-family: "Eudoxus";
+  font-family: var(--font-eudoxusSans), ui-sans-serif, system-ui, sans-serif;
 }
 
 *,
