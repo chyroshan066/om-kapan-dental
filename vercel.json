@@ -5,7 +5,7 @@
       "has": [
         {
           "type": "host",
-          "value": "<domain_name>"
+          "value": "omkapandentalktm.com.np"
         },
         {
           "type": "header",
@@ -13,7 +13,7 @@
           "value": "http"
         }
       ],
-      "destination": "https://www.<domain_name>/:path*",
+      "destination": "https://www.omkapandentalktm.com.np/:path*",
       "permanent": true
     },
     {
@@ -21,7 +21,7 @@
       "has": [
         {
           "type": "host",
-          "value": "www.<domain_name>"
+          "value": "www.omkapandentalktm.com.np"
         },
         {
           "type": "header",
@@ -29,7 +29,7 @@
           "value": "http"
         }
       ],
-      "destination": "https://www.<domain_name>/:path*",
+      "destination": "https://www.omkapandentalktm.com.np/:path*",
       "permanent": true
     }
   ]
