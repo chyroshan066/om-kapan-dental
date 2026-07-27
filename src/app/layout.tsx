@@ -167,7 +167,7 @@ export default function RootLayout({
         <IconSprite />
         <Preloader />
         <Header />
-        {children}
+        <main id="main">{children}</main>
         <Footer />
         <AnalyticsWrapper />
       </body>
