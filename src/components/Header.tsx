@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { NAVLINKS } from "@/constants";
+import Link from "next/link";
 
 export const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -22,18 +23,18 @@ export const Header = () => {
             <ul className="flex gap-x-10 xl:gap-x-12 text-slate-800 text-sm font-bold child:transition-colors child:delay-75 child-hover:text-primary">
               {NAVLINKS.map((link, index) => (
                 <li key={index}>
-                  <a href={link.href}>{link.name}</a>
+                  <Link href={link.href}>{link.name}</Link>
                 </li>
               ))}
             </ul>
           </nav>
           {/* Header Button */}
-          <a
+          <Link
             className="hidden lg:block h-full w-44 bg-primary text-white text-sm font-bold text-center leading-[3rem] rounded-xl transition-colors hover:bg-indigo-800"
             href="#contact"
           >
             Book appointment
-          </a>
+          </Link>
           {/* Mobile Menu */}
           <div className="lg:hidden relative">
             {/* Mobile Menu Toggle Button */}
@@ -81,7 +82,7 @@ export const Header = () => {
                   {NAVLINKS.map((link, index) => (
                     //    Menu Item
                     <li key={index}>
-                      <a
+                      <Link
                         className="flex items-center gap-x-1"
                         href={link.href}
                         onClick={hideMobileMenu}
@@ -90,20 +91,20 @@ export const Header = () => {
                           <use href={`#${link.icon}`} />
                         </svg>
                         {link.name}
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>
               </nav>
               {/* Button */}
               <div className="p-4">
-                <a
+                <Link
                   className="block w-full h-12 leading-[2.8rem] bg-primary text-white text-sm font-bold text-center rounded-xl transition-colors hover:bg-indigo-800"
                   href="#contact"
                   onClick={hideMobileMenu}
                 >
                   Book appointment
-                </a>
+                </Link>
               </div>
             </div>
           </div>

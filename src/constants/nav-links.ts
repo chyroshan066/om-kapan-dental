@@ -20,3 +20,22 @@ export const NAVLINKS = [
         icon: "envelope"
     },
 ];
+
+export const QUICK_LINKS = [
+    {
+        name: "About Us",
+        href: "#about",
+    },
+    {
+        name: "Dental Services",
+        href: "#services",
+    },
+    {
+        name: "Dentist",
+        href: "#dentist",
+    },
+    {
+        name: "FAQs",
+        href: "#faq",
+    },
+];

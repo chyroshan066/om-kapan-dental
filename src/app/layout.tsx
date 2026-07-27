@@ -6,6 +6,7 @@ import Script from "next/script";
 import { IconSprite } from "@/components/utility/IconSprite";
 import { Preloader } from "@/components/Preloader";
 import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 
 const baseURL =
   process.env.NEXT_PUBLIC_BASE_URL || "https://www.omkapandentalktm.com.np";
@@ -167,6 +168,7 @@ export default function RootLayout({
         <Preloader />
         <Header />
         {children}
+        <Footer />
         <AnalyticsWrapper />
       </body>
     </html>
