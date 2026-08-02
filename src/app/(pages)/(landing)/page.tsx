@@ -1,3 +1,4 @@
+import { Contact } from "@/components/Contact";
 import { Emergency } from "@/components/Emergency";
 import { Expert } from "@/components/Expert";
 import { Features } from "@/components/Features";
@@ -14,6 +15,7 @@ export default function Home() {
       <Features />
       <Expert />
       <Testimonial />
+      <Contact />
     </>
   );
 }
