@@ -1,17 +1,17 @@
 export const FEATURES = [
     {
         title: "Safety first",
-        description: "Lorem ipsum is placeholder text commonly used in the graphic ...",
+        description: "Sterilized equipment and strict hygiene protocols on every visit.",
         img: "/images/features/Safety-first.webp",    
     },
     {
         title: "Full-service dentistry",
-        description: "Lorem ipsum is placeholder text commonly used in the graphic ...",
+        description: "From routine checkups to surgery, everything is handled in-house.",
         img: "/images/features/Fullservice-dentistry.webp",    
     },
     {
         title: "No judgment ever",
-        description: "Lorem ipsum is placeholder text commonly used in the graphic ...",
+        description: "A relaxed, welcoming space no matter how long it's been.",
         img: "/images/features/No-judgment-ever.webp",    
     },
 ];

@@ -6,14 +6,14 @@ export const NAVLINKS = [
     },
     {
         name: "Services",
-        href: "#services",
+        href: "/services",
         icon: "gear"
     },
-    {
-        name: "About Us",
-        href: "#about",
-        icon: "users"
-    },
+    // {
+    //     name: "About Us",
+    //     href: "#about",
+    //     icon: "users"
+    // },
     {
         name: "Contact Us",
         href: "#contact",

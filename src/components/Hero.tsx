@@ -6,7 +6,7 @@ export const Hero = () => (
                         <h1 className="text-4xl leading-snug lg:text-5xl lg:leading-snug font-bold text-slate-800">
                             Entrust your smile to professional
                         </h1>
-                        <p className="text-slate-800/70 font-medium text-base lg:text-lg w-[90%]">Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
+                        <p className="text-slate-800/70 font-medium text-base lg:text-lg w-[90%]">Trusted dental care in the heart of Kathmandu. Our experienced dentists offer everything from preventive checkups to cosmetic treatments, in a modern clinic designed with your comfort in mind.</p>
                         <a className="h-12 w-44 bg-primary text-white text-sm font-bold text-center leading-[3rem] rounded-xl transition-colors hover:bg-indigo-800" href="#">Book appointment</a>
                     </div>
                     <div className="lg:w-1/2 mt-auto">
