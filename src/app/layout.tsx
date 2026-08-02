@@ -150,9 +150,9 @@ export default function RootLayout({
             __html: JSON.stringify("structured_data_from_constants"),
           }}
         />
-        <Script
-          src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
-          strategy="afterInteractive"
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
         />
         <Script
           src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"
