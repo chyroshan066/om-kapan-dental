@@ -34,8 +34,8 @@ export const QUICK_LINKS = [
         name: "Dentist",
         href: "#dentist",
     },
-    {
-        name: "FAQs",
-        href: "#faq",
-    },
+    // {
+    //     name: "FAQs",
+    //     href: "#faq",
+    // },
 ];

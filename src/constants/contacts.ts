@@ -1,19 +1,19 @@
 export const CONATACTS = [
     {
         name: "Phone Number",
-        value: "01234567890",
+        value: "9851187082",
         alt: "phone-icon",
         img: "/images/icons/phone-white-icon.webp",
     },
     {
         name: "Open Hour",
-        value: "09:00 AM - 18:00 PM",
+        value: "09:00 AM - 7:00 PM",
         alt: "clock-icon",
         img: "/images/icons/clock-icon.webp",
     },
     {
         name: "Clinic Address",
-        value: "Place to write an address",
+        value: "Bhrikuti Chowk, Kathmandu",
         alt: "location-icon",
         img: "/images/icons/location-icon.webp",
     },
