@@ -195,13 +195,15 @@ export default function RootLayout({
       </head>
 
       <body
-        className={`${eudoxusSans.variable}`}
+        className={`${eudoxusSans.variable} flex min-h-screen flex-col`}
         suppressHydrationWarning={true}
       >
         <IconSprite />
         <Preloader />
         <Header />
-        <main id="main">{children}</main>
+        <main id="main" className="flex flex-1 flex-col">
+          {children}
+        </main>
         <Footer />
         <AnalyticsWrapper />
       </body>

@@ -21,7 +21,7 @@ export const Contact = () => {
   const [appointmentTime, setAppointmentTime] = useState<TimeValue | null>(null);
 
   return (
-    <section id="contact" ref={ref} className={`section py-16 ${isVisible ? "" : "section-fade"}`}>
+    <section id="contact" ref={ref} className={`section py-16 ${isVisible ? "" : "section-fade"} mb-10`}>
       <div className="container">
         <div className="flex flex-col lg:flex-row gap-y-6 gap-x-20">
           {/* Map image */}

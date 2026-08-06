@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { NAVLINKS } from "@/constants";
 import Link from "next/link";
+import { LockKey } from "@phosphor-icons/react";
 
 export const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -102,14 +103,24 @@ export const Header = () => {
               )}
             </ul>
           </nav>
-          {/* Header Button */}
-          <a
-            className="hidden lg:block h-full w-44 bg-primary text-white text-sm font-bold text-center leading-[3rem] rounded-xl transition-colors hover:bg-indigo-800"
-            href="#contact"
-            onClick={(e) => handleNavClick(e, "#contact")}
-          >
-            Book appointment
-          </a>
+          {/* Header Button + Admin Login */}
+          <div className="hidden lg:flex items-center gap-x-3">
+            <a
+              className="h-full w-44 bg-primary text-white text-sm font-bold text-center leading-[3rem] rounded-xl transition-colors hover:bg-indigo-800"
+              href="#contact"
+              onClick={(e) => handleNavClick(e, "#contact")}
+            >
+              Book appointment
+            </a>
+            <a
+              href="/admin/login"
+              title="Admin Login"
+              aria-label="Admin Login"
+              className="flex items-center justify-center w-11 h-11 rounded-xl border border-gray-200 text-slate-500 transition-colors hover:text-primary hover:border-primary"
+            >
+              <LockKey className="w-5 h-5" weight="bold" />
+            </a>
+          </div>
           {/* Mobile Menu Toggle Button */}
           <div className="lg:hidden relative">
             <button
@@ -206,8 +217,8 @@ export const Header = () => {
             )}
           </ul>
         </nav>
-        {/* Button */}
-        <div className="p-4">
+        {/* Buttons */}
+        <div className="p-4 flex flex-col gap-y-3">
           <a
             className="block w-full h-12 leading-[2.8rem] bg-primary text-white text-sm font-bold text-center rounded-xl transition-colors hover:bg-indigo-800"
             href="#contact"
@@ -217,6 +228,14 @@ export const Header = () => {
             }}
           >
             Book appointment
+          </a>
+          <a
+            className="flex items-center justify-center gap-x-2 w-full h-11 text-sm font-bold text-slate-600 border border-gray-200 rounded-xl transition-colors hover:text-primary hover:border-primary"
+            href="/admin/login"
+            onClick={hideMobileMenu}
+          >
+            <LockKey className="w-4 h-4" weight="bold" />
+            Admin Login
           </a>
         </div>
       </div>
