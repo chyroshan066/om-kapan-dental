@@ -1,0 +1,37 @@
+export const BRANCHES = [
+    {
+        name: "Om Kapan Dental",
+        tag: "Main Branch",
+        address: "Bhrikuti Chowk, Kathmandu",
+        phone: "9851187082",
+        email: "omkapandental@gmail.com",
+        hours: "09:00 AM - 7:00 PM",
+        mapUrl: "https://www.google.com/maps?q=Om+Kapan+Dental,+Bhrikuti+Chowk,+Kathmandu",
+    },
+    {
+        name: "Lord of Dental",
+        tag: "Branch",
+        address: "Basundhara, Kathmandu",
+        phone: "+977-9849953477 / +977-1-4972065",
+        email: "Surakshyadhakal61@gmail.com",
+        hours: "",
+        mapUrl: "",
+    },
+    {
+        name: "Bangla Dental Care Center",
+        tag: "Branch",
+        address: "Gokarneshwor-2, Bangla Chowk, Nayapati, Kathmandu",
+        phone: "01-5924219 / 9851187082 / 9843233277",
+        hours: "",
+        mapUrl: "",
+    },
+    {
+        name: "Om Sankhu Dental",
+        tag: "Branch",
+        address: "Sankhrapur-6, Sankhu, Kathmandu",
+        phone: "01-5919474",
+        email: "sakhudental@gmail.com",
+        hours: "",
+        mapUrl: "",
+    },
+];

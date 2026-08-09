@@ -1,3 +1,4 @@
+import { Branches } from "@/components/Branches";
 import { Contact } from "@/components/Contact";
 import { Doctors } from "@/components/Doctors";
 import { Emergency } from "@/components/Emergency";
@@ -17,6 +18,7 @@ export default function Home() {
       <Expert />
       <Doctors />
       <Testimonial />
+      <Branches />
       <Contact />
     </>
   );
