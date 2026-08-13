@@ -143,7 +143,7 @@ export const Doctors = () => {
 
     return (
         <section
-            id="dentist"
+            id="dentists"
             ref={ref}
             className={`section py-16 ${isVisible ? "" : "section-fade"}`}
         >
@@ -152,7 +152,7 @@ export const Doctors = () => {
                 <div className="flex flex-col items-center gap-y-4 text-center mb-12">
                     <h4 className="text-sm text-primary font-bold">OUR TEAM</h4>
                     <p className="text-slate-800 text-4xl leading-snug font-bold sm:max-w-screen-sm">
-                        Meet our dentists
+                        Meet our Dentists
                     </p>
                     <p className="max-w-lg text-[15px] font-medium text-slate-800/70">
                         Every treatment is led by qualified, NMC-registered dentists

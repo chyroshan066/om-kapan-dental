@@ -9,11 +9,16 @@ export const NAVLINKS = [
         href: "/services",
         icon: "gear"
     },
-    // {
-    //     name: "About Us",
-    //     href: "#about",
-    //     icon: "users"
-    // },
+    {
+        name: "Dentist",
+        href: "#dentists",
+        icon: "users"
+    },
+    {
+        name: "Gallery",
+        href: "/gallery",
+        icon: "photo"
+    },
     {
         name: "Contact Us",
         href: "#contact",
@@ -33,6 +38,11 @@ export const QUICK_LINKS = [
     {
         name: "Dentist",
         href: "#dentist",
+    },
+    {
+        name: "Gallery",
+        href: "/gallery",
+        icon: "photo"
     },
     // {
     //     name: "FAQs",

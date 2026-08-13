@@ -7,3 +7,4 @@ export * from "./features";
 export * from "./testimonial";
 export * from "./doctors";
 export * from "./branches";
+export * from "./gallery";
