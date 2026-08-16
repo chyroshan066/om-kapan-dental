@@ -36,12 +36,6 @@ export const DOCTORS = [
         img: "/images/doctors/milan-koirala.webp",
     },
     {
-        name: "Dr. Sandhya Adhikari",
-        qualification: "Dental Surgeon (BDS)",
-        nmcNo: "31964",
-        img: "/images/doctors/sandhya-adhikari.webp",
-    },
-    {
         name: "Dr. Priyanka Sharma",
         qualification: "Dental Surgeon (BDS)",
         nmcNo: "32404",

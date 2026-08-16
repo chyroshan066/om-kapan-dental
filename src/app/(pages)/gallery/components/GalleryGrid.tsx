@@ -2,18 +2,16 @@
 
 import { useMemo, useState } from "react";
 import { Image as ImageIcon } from "@phosphor-icons/react";
-import { GALLERY_CATEGORIES, GALLERY_IMAGES } from "@/constants";
-import type { GalleryImage } from "@/constants";
+import { GALLERY_CATEGORIES } from "@/types/gallery";
+import type { GalleryImageRecord } from "@/types/gallery";
 
 // Renders the real photo when it loads, otherwise falls back to a styled
-// placeholder tile instead of a broken-image icon — needed right now since
-// none of the /images/gallery/... paths exist yet, but harmless once real
-// photos are added (onError simply never fires).
+// placeholder tile instead of a broken-image icon.
 const GalleryTile = ({
     image,
     onClick,
 }: {
-    image: GalleryImage;
+    image: GalleryImageRecord;
     onClick: () => void;
 }) => {
     const [failed, setFailed] = useState(false);
@@ -28,7 +26,7 @@ const GalleryTile = ({
                 <div className="flex h-full w-full flex-col items-center justify-center gap-y-2 bg-primary/5 text-primary/40">
                     <ImageIcon weight="light" className="w-10 h-10" />
                     <span className="text-xs font-bold text-primary/50">
-                        Photo coming soon
+                        Photo unavailable
                     </span>
                 </div>
             ) : (
@@ -48,15 +46,16 @@ const GalleryTile = ({
     );
 };
 
-export const GalleryGrid = () => {
-    const [activeCategory, setActiveCategory] =
-        useState<(typeof GALLERY_CATEGORIES)[number]>("All");
+export const GalleryGrid = ({ images }: { images: GalleryImageRecord[] }) => {
+    const [activeCategory, setActiveCategory] = useState<
+        "All" | (typeof GALLERY_CATEGORIES)[number]
+    >("All");
     const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
     const filteredImages = useMemo(() => {
-        if (activeCategory === "All") return GALLERY_IMAGES;
-        return GALLERY_IMAGES.filter((img) => img.category === activeCategory);
-    }, [activeCategory]);
+        if (activeCategory === "All") return images;
+        return images.filter((img) => img.category === activeCategory);
+    }, [activeCategory, images]);
 
     const activeImage =
         lightboxIndex !== null ? filteredImages[lightboxIndex] : null;
@@ -70,14 +69,45 @@ export const GalleryGrid = () => {
             i === null ? null : (i + 1) % filteredImages.length
         );
 
+    if (images.length === 0) {
+        return (
+            <div className="rounded-3xl border border-gray-100 bg-white p-10 text-center">
+                <p className="text-sm text-slate-800/60">
+                    Photos coming soon — check back shortly.
+                </p>
+            </div>
+        );
+    }
+
     return (
         <div className="flex flex-col gap-y-10">
+            {/* Category filter tabs */}
+            <div
+                className="flex flex-wrap justify-center"
+                style={{ gap: "10px" }}
+            >
+                {(["All", ...GALLERY_CATEGORIES] as const).map((cat) => (
+                    <button
+                        key={cat}
+                        type="button"
+                        onClick={() => setActiveCategory(cat)}
+                        style={{ padding: "10px 20px" }}
+                        className={`rounded-xl text-xs font-bold transition-colors whitespace-nowrap ${
+                            activeCategory === cat
+                                ? "bg-primary text-white"
+                                : "bg-white text-slate-600 border border-gray-200 hover:border-primary hover:text-primary"
+                        }`}
+                    >
+                        {cat}
+                    </button>
+                ))}
+            </div>
 
             {/* Image grid */}
             <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredImages.map((image, index) => (
                     <GalleryTile
-                        key={`${image.src}-${index}`}
+                        key={image.id}
                         image={image}
                         onClick={() => setLightboxIndex(index)}
                     />

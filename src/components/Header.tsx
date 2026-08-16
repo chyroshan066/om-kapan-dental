@@ -3,9 +3,9 @@
 import { useState, useEffect, useRef } from "react";
 import { NAVLINKS } from "@/constants";
 import Link from "next/link";
-import { LockKey } from "@phosphor-icons/react";
+import { LockKey, SquaresFour } from "@phosphor-icons/react";
 
-export const Header = () => {
+export const Header = ({ isAdminLoggedIn }: { isAdminLoggedIn: boolean }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -113,12 +113,16 @@ export const Header = () => {
               Book appointment
             </a>
             <a
-              href="/admin/login"
-              title="Admin Login"
-              aria-label="Admin Login"
+              href={isAdminLoggedIn ? "/admin/dashboard" : "/admin/login"}
+              title={isAdminLoggedIn ? "Dashboard" : "Admin Login"}
+              aria-label={isAdminLoggedIn ? "Dashboard" : "Admin Login"}
               className="flex items-center justify-center w-11 h-11 rounded-xl border border-gray-200 text-slate-500 transition-colors hover:text-primary hover:border-primary"
             >
-              <LockKey className="w-5 h-5" weight="bold" />
+              {isAdminLoggedIn ? (
+                <SquaresFour className="w-5 h-5" weight="bold" />
+              ) : (
+                <LockKey className="w-5 h-5" weight="bold" />
+              )}
             </a>
           </div>
           {/* Mobile Menu Toggle Button */}
@@ -231,11 +235,15 @@ export const Header = () => {
           </a>
           <a
             className="flex items-center justify-center gap-x-2 w-full h-11 text-sm font-bold text-slate-600 border border-gray-200 rounded-xl transition-colors hover:text-primary hover:border-primary"
-            href="/admin/login"
+            href={isAdminLoggedIn ? "/admin/dashboard" : "/admin/login"}
             onClick={hideMobileMenu}
           >
-            <LockKey className="w-4 h-4" weight="bold" />
-            Admin Login
+            {isAdminLoggedIn ? (
+              <SquaresFour className="w-4 h-4" weight="bold" />
+            ) : (
+              <LockKey className="w-4 h-4" weight="bold" />
+            )}
+            {isAdminLoggedIn ? "Dashboard" : "Admin Login"}
           </a>
         </div>
       </div>

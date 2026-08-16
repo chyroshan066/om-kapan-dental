@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { sql } from "@/utils/db";
+import type { GalleryImageRecord } from "@/types/gallery";
 import { GalleryGrid } from "./components/GalleryGrid";
 
 const baseURL =
@@ -43,7 +45,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function GalleryPage() {
+export default async function GalleryPage() {
+  const images = (await sql`
+    select id, src, public_id, alt, category, created_at
+    from gallery_images
+    order by created_at desc
+  `) as GalleryImageRecord[];
+
   return (
     <section className="section mb-32 pt-16 lg:pt-20">
       <div className="container">
@@ -64,7 +72,7 @@ export default function GalleryPage() {
           </div>
 
           {/* Filterable gallery grid */}
-          <GalleryGrid />
+          <GalleryGrid images={images} />
         </div>
       </div>
     </section>

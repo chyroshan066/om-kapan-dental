@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { CalendarBlank, Clock, Phone } from "@phosphor-icons/react";
 import type { Appointment, AppointmentStatus } from "@/types/appointment";
+import { StatusDropdown } from "@/components/admin/StatusDropdown";
 
 const STATUS_STYLES: Record<AppointmentStatus, string> = {
   new: "bg-primary/10 text-primary",
@@ -25,10 +26,12 @@ const STATUS_OPTIONS: AppointmentStatus[] = [
   "cancelled",
 ];
 
-function formatDate(isoDate: string) {
-  // Parsed with an explicit local-midnight time so this doesn't shift a
-  // day backwards/forwards depending on the browser's timezone offset.
-  const date = new Date(`${isoDate}T00:00:00`);
+function formatDate(rawDate: Appointment["appointment_date"]) {
+  // Neon's driver returns SQL `date` columns as native Date objects, not
+  // strings — despite what a naive server-side type might suggest. Handle
+  // both so this doesn't silently produce "Invalid Date".
+  const date =
+    rawDate instanceof Date ? rawDate : new Date(`${rawDate}T00:00:00`);
   return date.toLocaleDateString("en-US", {
     weekday: "short",
     month: "short",
@@ -82,13 +85,17 @@ export function AppointmentsView({
   return (
     <div>
       {/* Filter tabs */}
-      <div className="flex flex-wrap gap-2 mb-6">
+      <div
+        className="flex flex-wrap"
+        style={{ gap: "10px", marginBottom: "32px" }}
+      >
         {(["all", ...STATUS_OPTIONS] as const).map((option) => (
           <button
             key={option}
             type="button"
             onClick={() => setFilter(option)}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors ${
+            style={{ padding: "10px 20px" }}
+            className={`rounded-xl text-xs font-bold transition-colors whitespace-nowrap ${
               filter === option
                 ? "bg-primary text-white"
                 : "bg-white text-slate-600 border border-gray-200 hover:border-primary hover:text-primary"
@@ -148,23 +155,13 @@ export function AppointmentsView({
 
               {/* Status control */}
               <div className="shrink-0">
-                <select
+                <StatusDropdown
                   value={appointment.status}
                   disabled={updatingId === appointment.id}
-                  onChange={(e) =>
-                    handleStatusChange(
-                      appointment.id,
-                      e.target.value as AppointmentStatus
-                    )
+                  onChange={(status) =>
+                    handleStatusChange(appointment.id, status)
                   }
-                  className="form-input h-11 py-0 text-sm font-bold disabled:opacity-60"
-                >
-                  {STATUS_OPTIONS.map((option) => (
-                    <option key={option} value={option}>
-                      {STATUS_LABELS[option]}
-                    </option>
-                  ))}
-                </select>
+                />
               </div>
             </div>
           ))}

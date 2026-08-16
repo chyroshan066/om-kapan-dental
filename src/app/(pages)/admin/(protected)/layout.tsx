@@ -1,8 +1,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ADMIN_SESSION_COOKIE, verifySessionToken } from "@/utils/auth";
-import { AdminSidebar } from "@/components/admin/AdminSidebar";
-import { AdminTopbar } from "@/components/admin/AdminTopbar";
+import { AdminShell } from "@/components/admin/AdminShell";
 
 export default async function AdminProtectedLayout({
   children,
@@ -20,13 +19,5 @@ export default async function AdminProtectedLayout({
     redirect("/admin/login");
   }
 
-  return (
-    <div className="flex min-h-screen bg-gray-50">
-      <AdminSidebar />
-      <div className="flex-1 flex flex-col min-w-0">
-        <AdminTopbar email={session.email} />
-        <main className="flex-1 px-4 sm:px-8 py-8">{children}</main>
-      </div>
-    </div>
-  );
+  return <AdminShell email={session.email}>{children}</AdminShell>;
 }

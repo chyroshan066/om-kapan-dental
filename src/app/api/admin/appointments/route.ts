@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     select id, name, phone, message, appointment_date, appointment_time_label,
            appointment_time_minutes, status, created_at
     from appointments
-    order by appointment_date asc, appointment_time_minutes asc
+    order by created_at desc
   `;
 
   return NextResponse.json({ appointments });

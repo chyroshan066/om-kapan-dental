@@ -16,7 +16,13 @@ import { Footer } from "@/components/Footer";
  * scripts), that's the pattern to reach for instead — but for now, hiding
  * the public chrome here is enough.
  */
-export function SiteChrome({ children }: { children: React.ReactNode }) {
+export function SiteChrome({
+  children,
+  isAdminLoggedIn,
+}: {
+  children: React.ReactNode;
+  isAdminLoggedIn: boolean;
+}) {
   const pathname = usePathname();
   const isAdminRoute = pathname?.startsWith("/admin");
 
@@ -27,7 +33,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Preloader />
-      <Header />
+      <Header isAdminLoggedIn={isAdminLoggedIn} />
       {children}
       <Footer />
     </>

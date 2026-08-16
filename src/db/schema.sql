@@ -18,9 +18,6 @@ create table if not exists appointments (
   phone text not null,
   message text not null,
   appointment_date date not null,
-  -- Display-ready label, e.g. "09:00 AM" — kept alongside the sortable
-  -- minutes value below since the site's TimePicker uses a 12-hour
-  -- {hour, minute, period} shape rather than a native SQL time.
   appointment_time_label text not null,
   appointment_time_minutes smallint not null,
   status text not null default 'new'
@@ -33,3 +30,18 @@ create index if not exists appointments_date_time_idx
 
 create index if not exists appointments_status_idx
   on appointments (status);
+
+create table if not exists gallery_images (
+  id uuid primary key default gen_random_uuid(),
+  src text not null,
+  -- Cloudinary's asset identifier, needed to delete the actual file from
+  -- Cloudinary storage when the DB row is deleted (see the DELETE route).
+  public_id text not null,
+  alt text not null,
+  category text not null
+    check (category in ('Clinic', 'Treatment Rooms', 'Equipment', 'Our Team')),
+  created_at timestamptz not null default now()
+);
+
+create index if not exists gallery_images_category_idx
+  on gallery_images (category);
