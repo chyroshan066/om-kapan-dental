@@ -29,6 +29,14 @@ const GalleryTile = ({
                         Photo unavailable
                     </span>
                 </div>
+            ) : image.resource_type === "video" ? (
+                <video
+                    src={image.src}
+                    muted
+                    playsInline
+                    onError={() => setFailed(true)}
+                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                />
             ) : (
                 <img
                     src={image.src}
@@ -151,15 +159,24 @@ export const GalleryGrid = ({ images }: { images: GalleryImageRecord[] }) => {
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div className="relative aspect-[4/3] w-full overflow-hidden rounded-3xl bg-white/5">
-                            <img
-                                src={activeImage.src}
-                                alt={activeImage.alt}
-                                className="h-full w-full object-contain"
-                                onError={(e) => {
-                                    (e.currentTarget as HTMLImageElement).style.display =
-                                        "none";
-                                }}
-                            />
+                            {activeImage.resource_type === "video" ? (
+                                <video
+                                    src={activeImage.src}
+                                    controls
+                                    autoPlay
+                                    className="h-full w-full object-contain"
+                                />
+                            ) : (
+                                <img
+                                    src={activeImage.src}
+                                    alt={activeImage.alt}
+                                    className="h-full w-full object-contain"
+                                    onError={(e) => {
+                                        (e.currentTarget as HTMLImageElement).style.display =
+                                            "none";
+                                    }}
+                                />
+                            )}
                         </div>
                         <p className="mt-4 text-center text-white/80 text-sm font-medium">
                             {activeImage.alt}

@@ -40,8 +40,15 @@ create table if not exists gallery_images (
   alt text not null,
   category text not null
     check (category in ('Clinic', 'Treatment Rooms', 'Equipment', 'Our Team')),
+  resource_type text not null default 'image'
+    check (resource_type in ('image', 'video')),
   created_at timestamptz not null default now()
 );
+
+-- Safe to re-run: adds the column if you already created this table
+-- before resource_type existed.
+alter table gallery_images
+  add column if not exists resource_type text not null default 'image';
 
 create index if not exists gallery_images_category_idx
   on gallery_images (category);

@@ -58,7 +58,7 @@ export async function DELETE(
   const { id } = await params;
 
   const rows = await sql`
-    delete from gallery_images where id = ${id} returning public_id
+    delete from gallery_images where id = ${id} returning public_id, resource_type
   `;
 
   if (rows.length === 0) {
@@ -69,7 +69,9 @@ export async function DELETE(
   // fails, we don't want to block/fail the whole request over an orphaned
   // remote file. Worth revisiting with a cleanup job if this matters later.
   try {
-    await cloudinary.uploader.destroy(rows[0].public_id);
+    await cloudinary.uploader.destroy(rows[0].public_id, {
+      resource_type: rows[0].resource_type,
+    });
   } catch {
     // Intentionally swallowed — see comment above.
   }

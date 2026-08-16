@@ -7,7 +7,7 @@ export const Hero = () => (
                             Entrust your smile to professional
                         </h1>
                         <p className="text-slate-800/70 font-medium text-base lg:text-lg w-[90%]">Trusted dental care in the heart of Kathmandu. Our experienced dentists offer everything from preventive checkups to cosmetic treatments, in a modern clinic designed with your comfort in mind.</p>
-                        <a className="h-12 w-44 bg-primary text-white text-sm font-bold text-center leading-[3rem] rounded-xl transition-colors hover:bg-indigo-800" href="#">Book appointment</a>
+                        <a className="h-12 w-44 bg-primary text-white text-sm font-bold text-center leading-[3rem] rounded-xl transition-colors hover:bg-indigo-800" href="/#contact">Book appointment</a>
                     </div>
                     <div className="lg:w-1/2 mt-auto">
                         <img className="" src="/images/top-main.webp" alt="" />

@@ -1,13 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 import { sql } from "@/utils/db";
 import { getAdminSession } from "@/utils/auth";
-import { cloudinary } from "@/utils/cloudinary";
 import { GALLERY_CATEGORIES } from "@/types/gallery";
-import type { GalleryCategory } from "@/types/gallery";
-
-// Kept comfortably under Vercel's ~4.5MB request body ceiling for
-// serverless functions.
-const MAX_FILE_SIZE_BYTES = 4 * 1024 * 1024;
 
 export async function GET(request: NextRequest) {
   const session = await getAdminSession(request);
@@ -16,7 +11,7 @@ export async function GET(request: NextRequest) {
   }
 
   const images = await sql`
-    select id, src, public_id, alt, category, created_at
+    select id, src, public_id, alt, category, resource_type, created_at
     from gallery_images
     order by created_at desc
   `;
@@ -24,73 +19,41 @@ export async function GET(request: NextRequest) {
   return NextResponse.json({ images });
 }
 
+// The actual file upload now happens client-side, directly to Cloudinary
+// (see /api/admin/gallery/upload-signature) — this route only ever
+// receives already-uploaded metadata to persist in Neon. This is what
+// lets large images/videos bypass Vercel's ~4.5MB serverless request
+// body limit entirely, since the file itself never touches this route.
+const createSchema = z.object({
+  src: z.string().url(),
+  public_id: z.string().min(1),
+  alt: z.string().trim().min(1, "Please enter a description.").max(200),
+  category: z.enum(GALLERY_CATEGORIES as [string, ...string[]]),
+  resource_type: z.enum(["image", "video"]).default("image"),
+});
+
 export async function POST(request: NextRequest) {
   const session = await getAdminSession(request);
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const formData = await request.formData().catch(() => null);
-  if (!formData) {
-    return NextResponse.json({ error: "Invalid form data." }, { status: 400 });
-  }
+  const body = await request.json().catch(() => null);
+  const parsed = createSchema.safeParse(body);
 
-  const file = formData.get("file");
-  const alt = formData.get("alt")?.toString().trim();
-  const category = formData.get("category")?.toString();
-
-  if (!(file instanceof File)) {
-    return NextResponse.json({ error: "Please choose a photo." }, { status: 400 });
-  }
-  if (!file.type.startsWith("image/")) {
-    return NextResponse.json({ error: "File must be an image." }, { status: 400 });
-  }
-  if (file.size > MAX_FILE_SIZE_BYTES) {
+  if (!parsed.success) {
     return NextResponse.json(
-      { error: "Image must be under 4MB." },
+      { error: parsed.error.issues[0]?.message || "Invalid input." },
       { status: 400 }
     );
   }
-  if (!alt) {
-    return NextResponse.json(
-      { error: "Please enter a description for the photo." },
-      { status: 400 }
-    );
-  }
-  if (!category || !GALLERY_CATEGORIES.includes(category as GalleryCategory)) {
-    return NextResponse.json({ error: "Please choose a category." }, { status: 400 });
-  }
 
-  const buffer = Buffer.from(await file.arrayBuffer());
-
-  const uploadResult = await new Promise<{
-    secure_url: string;
-    public_id: string;
-  }>((resolve, reject) => {
-    const stream = cloudinary.uploader.upload_stream(
-      { folder: "om-kapan-dental/gallery" },
-      (error, result) => {
-        if (error || !result) {
-          reject(error ?? new Error("Cloudinary upload failed."));
-          return;
-        }
-        resolve({ secure_url: result.secure_url, public_id: result.public_id });
-      }
-    );
-    stream.end(buffer);
-  }).catch(() => null);
-
-  if (!uploadResult) {
-    return NextResponse.json(
-      { error: "Upload to Cloudinary failed. Please try again." },
-      { status: 502 }
-    );
-  }
+  const { src, public_id, alt, category, resource_type } = parsed.data;
 
   const rows = await sql`
-    insert into gallery_images (src, public_id, alt, category)
-    values (${uploadResult.secure_url}, ${uploadResult.public_id}, ${alt}, ${category})
-    returning id, src, public_id, alt, category, created_at
+    insert into gallery_images (src, public_id, alt, category, resource_type)
+    values (${src}, ${public_id}, ${alt}, ${category}, ${resource_type})
+    returning id, src, public_id, alt, category, resource_type, created_at
   `;
 
   return NextResponse.json({ image: rows[0] });

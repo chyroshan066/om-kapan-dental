@@ -4,7 +4,7 @@ import { GalleryManager } from "@/components/admin/GalleryManager";
 
 export default async function AdminGalleryPage() {
   const images = (await sql`
-    select id, src, public_id, alt, category, created_at
+    select id, src, public_id, alt, category, resource_type, created_at
     from gallery_images
     order by created_at desc
   `) as GalleryImageRecord[];

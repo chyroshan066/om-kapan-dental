@@ -107,7 +107,7 @@ export const Header = ({ isAdminLoggedIn }: { isAdminLoggedIn: boolean }) => {
           <div className="hidden lg:flex items-center gap-x-3">
             <a
               className="h-full w-44 bg-primary text-white text-sm font-bold text-center leading-[3rem] rounded-xl transition-colors hover:bg-indigo-800"
-              href="#contact"
+              href="/#contact"
               onClick={(e) => handleNavClick(e, "#contact")}
             >
               Book appointment
@@ -225,7 +225,7 @@ export const Header = ({ isAdminLoggedIn }: { isAdminLoggedIn: boolean }) => {
         <div className="p-4 flex flex-col gap-y-3">
           <a
             className="block w-full h-12 leading-[2.8rem] bg-primary text-white text-sm font-bold text-center rounded-xl transition-colors hover:bg-indigo-800"
-            href="#contact"
+            href="/#contact"
             onClick={(e) => {
               handleNavClick(e, "#contact");
               hideMobileMenu();

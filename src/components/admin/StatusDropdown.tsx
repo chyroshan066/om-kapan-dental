@@ -38,7 +38,9 @@ export function StatusDropdown({
   disabled,
 }: StatusDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [dropUp, setDropUp] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   useClickOutside(containerRef, () => setIsOpen(false), isOpen);
 
   const handleSelect = (status: AppointmentStatus) => {
@@ -46,12 +48,24 @@ export function StatusDropdown({
     setIsOpen(false);
   };
 
+  const handleToggle = () => {
+    if (!isOpen && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      const estimatedPanelHeight = 220;
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const spaceAbove = rect.top;
+      setDropUp(spaceBelow < estimatedPanelHeight && spaceAbove > spaceBelow);
+    }
+    setIsOpen((prev) => !prev);
+  };
+
   return (
     <div className="relative w-full sm:w-40" ref={containerRef}>
       <button
+        ref={buttonRef}
         type="button"
         disabled={disabled}
-        onClick={() => setIsOpen((prev) => !prev)}
+        onClick={handleToggle}
         className="flex w-full items-center justify-between gap-x-2 h-11 px-4 rounded-xl border border-gray-200 bg-white text-sm font-bold text-slate-800 transition-colors hover:border-primary disabled:opacity-60 disabled:cursor-not-allowed"
       >
         <span className="flex items-center gap-x-2 truncate">
@@ -65,7 +79,9 @@ export function StatusDropdown({
 
       {isOpen && (
         <div
-          className="absolute right-0 z-20 mt-2 w-full min-w-[10rem] rounded-2xl border border-gray-100 bg-white p-1.5 shadow-2xl shadow-slate-400/20"
+          className={`absolute right-0 z-20 w-full min-w-[10rem] max-h-56 overflow-y-auto rounded-2xl border border-gray-100 bg-white p-1.5 shadow-2xl shadow-slate-400/20 ${
+            dropUp ? "bottom-full mb-2" : "top-full mt-2"
+          }`}
           role="listbox"
         >
           {STATUS_OPTIONS.map((option) => {

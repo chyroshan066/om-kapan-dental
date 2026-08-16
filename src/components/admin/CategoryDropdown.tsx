@@ -18,15 +18,29 @@ export function CategoryDropdown({
   disabled,
 }: CategoryDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [dropUp, setDropUp] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   useClickOutside(containerRef, () => setIsOpen(false), isOpen);
+
+  const handleToggle = () => {
+    if (!isOpen && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      const estimatedPanelHeight = 220; // ~4 options + padding
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const spaceAbove = rect.top;
+      setDropUp(spaceBelow < estimatedPanelHeight && spaceAbove > spaceBelow);
+    }
+    setIsOpen((prev) => !prev);
+  };
 
   return (
     <div className="relative w-full" ref={containerRef}>
       <button
+        ref={buttonRef}
         type="button"
         disabled={disabled}
-        onClick={() => setIsOpen((prev) => !prev)}
+        onClick={handleToggle}
         style={{ padding: "12px 16px" }}
         className="flex w-full items-center justify-between gap-x-2 rounded-xl border border-gray-200 bg-white text-sm font-bold text-slate-800 transition-colors hover:border-primary disabled:opacity-60"
       >
@@ -36,7 +50,9 @@ export function CategoryDropdown({
 
       {isOpen && (
         <div
-          className="absolute z-20 mt-2 w-full rounded-2xl border border-gray-100 bg-white p-1.5 shadow-2xl shadow-slate-400/20"
+          className={`absolute z-20 w-full max-h-56 overflow-y-auto rounded-2xl border border-gray-100 bg-white p-1.5 shadow-2xl shadow-slate-400/20 ${
+            dropUp ? "bottom-full mb-2" : "top-full mt-2"
+          }`}
           role="listbox"
         >
           {GALLERY_CATEGORIES.map((option) => {

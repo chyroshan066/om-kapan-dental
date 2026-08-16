@@ -11,7 +11,7 @@ export const NAVLINKS = [
     },
     {
         name: "Dentist",
-        href: "#dentists",
+        href: "/#dentists",
         icon: "users"
     },
     {
@@ -21,19 +21,15 @@ export const NAVLINKS = [
     },
     {
         name: "Contact Us",
-        href: "#contact",
+        href: "/#contact",
         icon: "envelope"
     },
 ];
 
 export const QUICK_LINKS = [
     {
-        name: "About Us",
-        href: "#about",
-    },
-    {
         name: "Dental Services",
-        href: "#services",
+        href: "/services",
     },
     {
         name: "Dentist",
@@ -44,8 +40,8 @@ export const QUICK_LINKS = [
         href: "/gallery",
         icon: "photo"
     },
-    // {
-    //     name: "FAQs",
-    //     href: "#faq",
-    // },
+    {
+        name: "Contact",
+        href: "/#contact",
+    },
 ];

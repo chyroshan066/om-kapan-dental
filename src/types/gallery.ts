@@ -17,5 +17,6 @@ export interface GalleryImageRecord {
   public_id: string;
   alt: string;
   category: GalleryCategory;
+  resource_type: "image" | "video";
   created_at: string;
 }
