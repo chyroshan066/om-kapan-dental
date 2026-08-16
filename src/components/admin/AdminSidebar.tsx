@@ -25,23 +25,23 @@ function SidebarNav({
         const isActive = pathname === item.href;
         const Icon = item.icon;
 
-        if (item.comingSoon) {
-          return (
-            <div
-              key={item.href}
-              title="Coming soon"
-              className="flex items-center justify-between gap-x-3 px-4 py-3 rounded-xl text-sm font-bold text-slate-400 cursor-not-allowed"
-            >
-              <span className="flex items-center gap-x-3">
-                <Icon className="w-5 h-5" weight="bold" />
-                {item.name}
-              </span>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-gray-100 text-slate-400">
-                Soon
-              </span>
-            </div>
-          );
-        }
+        // if (item.comingSoon) {
+        //   return (
+        //     <div
+        //       key={item.href}
+        //       title="Coming soon"
+        //       className="flex items-center justify-between gap-x-3 px-4 py-3 rounded-xl text-sm font-bold text-slate-400 cursor-not-allowed"
+        //     >
+        //       <span className="flex items-center gap-x-3">
+        //         <Icon className="w-5 h-5" weight="bold" />
+        //         {item.name}
+        //       </span>
+        //       <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-gray-100 text-slate-400">
+        //         Soon
+        //       </span>
+        //     </div>
+        //   );
+        // }
 
         return (
           <Link
