@@ -1,11 +1,14 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { NAVLINKS } from "@/constants";
 import Link from "next/link";
 import { LockKey, SquaresFour } from "@phosphor-icons/react";
 
 export const Header = ({ isAdminLoggedIn }: { isAdminLoggedIn: boolean }) => {
+  const pathname = usePathname();
+  const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -18,10 +21,40 @@ export const Header = ({ isAdminLoggedIn }: { isAdminLoggedIn: boolean }) => {
     e: React.MouseEvent<HTMLAnchorElement>,
     href: string
   ) => {
+    const hashIndex = href.indexOf("#");
+    if (hashIndex === -1) return; // plain route — let normal navigation happen
+
+    const hash = href.slice(hashIndex); // e.g. "#contact"
+    const targetPath = href.slice(0, hashIndex) || "/";
+
     e.preventDefault();
-    const target = document.querySelector(href);
-    target?.scrollIntoView({ behavior: "smooth" });
+
+    if (pathname === targetPath) {
+      // Already on the right page — just scroll, no navigation needed.
+      document.querySelector(hash)?.scrollIntoView({ behavior: "smooth" });
+    } else {
+      // Navigate first (scroll: false so Next doesn't try its own,
+      // less-reliable hash-scroll behavior), then let the effect below
+      // scroll smoothly once the new page has rendered.
+      router.push(href, { scroll: false });
+    }
   };
+
+  // After a cross-page hash navigation lands, scroll to the target
+  // section smoothly. Handled manually rather than relying on Next's
+  // built-in post-navigation hash scroll, which doesn't reliably respect
+  // the global `scroll-behavior: smooth` CSS.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const hash = window.location.hash;
+    if (!hash) return;
+
+    const timer = setTimeout(() => {
+      document.querySelector(hash)?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [pathname]);
 
   useEffect(() => {
     lastScrollY.current = window.scrollY;
@@ -89,7 +122,7 @@ export const Header = ({ isAdminLoggedIn }: { isAdminLoggedIn: boolean }) => {
           <nav className="hidden lg:block">
             <ul className="flex gap-x-10 xl:gap-x-12 text-slate-800 text-sm font-bold child:transition-colors child:delay-75 child-hover:text-primary">
               {NAVLINKS.map((link, index) =>
-                link.href.startsWith("#") ? (
+                link.href.includes("#") ? (
                   <li key={index}>
                     <a href={link.href} onClick={(e) => handleNavClick(e, link.href)}>
                       {link.name}
@@ -108,7 +141,7 @@ export const Header = ({ isAdminLoggedIn }: { isAdminLoggedIn: boolean }) => {
             <a
               className="h-full w-44 bg-primary text-white text-sm font-bold text-center leading-[3rem] rounded-xl transition-colors hover:bg-indigo-800"
               href="/#contact"
-              onClick={(e) => handleNavClick(e, "#contact")}
+              onClick={(e) => handleNavClick(e, "/#contact")}
             >
               Book appointment
             </a>
@@ -188,7 +221,7 @@ export const Header = ({ isAdminLoggedIn }: { isAdminLoggedIn: boolean }) => {
           {/* Menu List */}
           <ul className="flex flex-col gap-y-5 text-slate-800 text-sm font-medium child:transition-colors child:delay-75 child-hover:text-primary">
             {NAVLINKS.map((link, index) =>
-              link.href.startsWith("#") ? (
+              link.href.includes("#") ? (
                 <li key={index}>
                   <a
                     className="flex items-center gap-x-1"
@@ -227,7 +260,7 @@ export const Header = ({ isAdminLoggedIn }: { isAdminLoggedIn: boolean }) => {
             className="block w-full h-12 leading-[2.8rem] bg-primary text-white text-sm font-bold text-center rounded-xl transition-colors hover:bg-indigo-800"
             href="/#contact"
             onClick={(e) => {
-              handleNavClick(e, "#contact");
+              handleNavClick(e, "/#contact");
               hideMobileMenu();
             }}
           >

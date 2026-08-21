@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Image as ImageIcon } from "@phosphor-icons/react";
 import { GALLERY_CATEGORIES } from "@/types/gallery";
 import type { GalleryImageRecord } from "@/types/gallery";
@@ -59,6 +59,14 @@ export const GalleryGrid = ({ images }: { images: GalleryImageRecord[] }) => {
         "All" | (typeof GALLERY_CATEGORIES)[number]
     >("All");
     const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+    // Prevent the page behind the lightbox from scrolling while it's open.
+    useEffect(() => {
+        document.body.style.overflow = lightboxIndex !== null ? "hidden" : "";
+        return () => {
+            document.body.style.overflow = "";
+        };
+    }, [lightboxIndex]);
 
     const filteredImages = useMemo(() => {
         if (activeCategory === "All") return images;
@@ -155,22 +163,26 @@ export const GalleryGrid = ({ images }: { images: GalleryImageRecord[] }) => {
                     </button>
 
                     <div
-                        className="max-w-3xl w-full"
+                        className="max-w-3xl w-full overflow-y-auto"
+                        style={{ maxHeight: "calc(100vh - 64px)" }}
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-3xl bg-white/5">
+                        <div
+                            className="flex items-center justify-center overflow-hidden rounded-3xl bg-white/5"
+                            style={{ maxHeight: "65vh" }}
+                        >
                             {activeImage.resource_type === "video" ? (
                                 <video
                                     src={activeImage.src}
                                     controls
                                     autoPlay
-                                    className="h-full w-full object-contain"
+                                    className="max-h-[65vh] w-auto max-w-full object-contain"
                                 />
                             ) : (
                                 <img
                                     src={activeImage.src}
                                     alt={activeImage.alt}
-                                    className="h-full w-full object-contain"
+                                    className="max-h-[65vh] w-auto max-w-full object-contain"
                                     onError={(e) => {
                                         (e.currentTarget as HTMLImageElement).style.display =
                                             "none";
@@ -178,7 +190,7 @@ export const GalleryGrid = ({ images }: { images: GalleryImageRecord[] }) => {
                                 />
                             )}
                         </div>
-                        <p className="mt-4 text-center text-white/80 text-sm font-medium">
+                        <p className="mt-4 pb-2 text-center text-white/80 text-sm font-medium">
                             {activeImage.alt}
                         </p>
                     </div>

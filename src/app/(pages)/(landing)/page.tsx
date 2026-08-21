@@ -6,7 +6,7 @@ import { Expert } from "@/components/Expert";
 import { Features } from "@/components/Features";
 import { Hero } from "@/components/Hero";
 import { Services } from "@/components/Services";
-// import { Testimonial } from "@/components/Testimonial";
+import { Testimonial } from "@/components/Testimonial";
 
 export default function Home() {
   return (
@@ -17,7 +17,7 @@ export default function Home() {
       <Features />
       <Expert />
       <Doctors />
-      {/* <Testimonial /> */}
+      <Testimonial />
       <Branches />
       <Contact />
     </>

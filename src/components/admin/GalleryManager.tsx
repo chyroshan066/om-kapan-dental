@@ -405,7 +405,7 @@ export function GalleryManager({
           {images.map((image) => (
             <div
               key={image.id}
-              className="group relative aspect-[4/3] overflow-hidden rounded-3xl border border-gray-100 bg-gray-50"
+              className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-gray-100 bg-gray-50"
             >
               {image.resource_type === "video" ? (
                 <video
@@ -424,11 +424,15 @@ export function GalleryManager({
               <span className="absolute top-3 left-3 rounded-full bg-white/90 px-3 py-1 text-xs font-bold text-primary backdrop-blur">
                 {image.category}
               </span>
-              <div className="absolute inset-0 flex items-center justify-center gap-x-3 bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
+              {/* Always-visible controls (not hover-reveal) — a
+                  group-hover overlay never becomes reachable on
+                  touchscreens, since there's no persistent hover state
+                  on mobile. */}
+              <div className="absolute top-3 right-3 flex flex-col gap-y-2">
                 <button
                   type="button"
                   onClick={() => openEdit(image)}
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-slate-700 transition-colors hover:text-primary"
+                  className="flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-slate-700 shadow-sm backdrop-blur transition-colors hover:text-primary"
                   aria-label="Edit"
                 >
                   <PencilSimple className="w-4 h-4" weight="bold" />
@@ -437,7 +441,7 @@ export function GalleryManager({
                   type="button"
                   onClick={() => handleDelete(image.id)}
                   disabled={deletingId === image.id}
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-slate-700 transition-colors hover:text-red-500 disabled:opacity-60"
+                  className="flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-slate-700 shadow-sm backdrop-blur transition-colors hover:text-red-500 disabled:opacity-60"
                   aria-label="Delete"
                 >
                   <Trash className="w-4 h-4" weight="bold" />
