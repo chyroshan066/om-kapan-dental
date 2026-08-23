@@ -1,7 +1,7 @@
 export const CONATACTS = [
     {
         name: "Phone Number",
-        value: "9851187082",
+        value: "9851187082 / 01-5914850",
         alt: "phone-icon",
         img: "/images/icons/phone-white-icon.webp",
     },
