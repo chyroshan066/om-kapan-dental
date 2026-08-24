@@ -172,12 +172,36 @@ export const Doctors = () => {
                                     }}
                                     className="flex h-full flex-col items-center text-center gap-y-3 bg-white border border-gray-100 rounded-3xl p-8 shadow-sm transition-all hover:shadow-2xl hover:shadow-slate-400/20 hover:-translate-y-1"
                                 >
-                                    {/* Photo */}
-                                    <img
-                                        src={doctor.img}
-                                        alt={doctor.name}
-                                        className="w-28 h-28 rounded-full object-cover border-4 border-primary/10"
-                                    />
+                                    {/* Photo frame. Source images will
+                                        eventually be uploaded freely via the
+                                        admin panel, so we can't assume a
+                                        consistent portrait headshot crop —
+                                        some are portrait, some landscape,
+                                        some (like the current placeholders)
+                                        aren't headshots at all. A circular
+                                        frame with object-cover center-crops
+                                        to fill the circle, which on a wide
+                                        landscape source cuts off most of the
+                                        image and can leave the actual
+                                        subject outside the visible circle
+                                        entirely.
+
+                                        Using a square frame with
+                                        object-contain instead guarantees the
+                                        *whole* image is always visible,
+                                        regardless of its orientation —
+                                        nothing gets cropped out. Any leftover
+                                        space (e.g. a landscape photo in a
+                                        square box) is filled by the frame's
+                                        own background rather than stretching
+                                        or cropping the photo. */}
+                                    <div className="w-28 h-28 rounded-2xl border-4 border-primary/10 bg-gray-100 overflow-hidden shrink-0 flex items-center justify-center">
+                                        <img
+                                            src={doctor.img}
+                                            alt={doctor.name}
+                                            className="w-full h-full object-contain"
+                                        />
+                                    </div>
                                     {/* Name + qualification grouped up top; the
                                         badge is pushed to the bottom via
                                         mt-auto so it lines up across cards

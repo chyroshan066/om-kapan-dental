@@ -13,7 +13,7 @@ export const BRANCHES = [
         tag: "Branch",
         address: "Basundhara, Kathmandu",
         phone: "9849953477 / 01-4972065",
-        email: "Surakshyadhakal61@gmail.com",
+        email: "lordofdental2026@gmail.com",
         hours: "",
         mapUrl: "",
     },

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { sql } from "@/utils/db";
 import { formatTimeValue } from "@/utils/time-utils";
+import { sendAppointmentEmail } from "@/utils/email";
 
 const timeValueSchema = z.object({
   hour: z.number().int().min(1).max(12),
@@ -44,6 +45,11 @@ export async function POST(request: NextRequest) {
       (${name}, ${phone}, ${message}, ${date}, ${timeLabel}, ${timeMinutes})
     returning id
   `;
+
+  // Fire-and-forget: don't await/block the response on email delivery, and
+  // never let an email failure turn a successful booking into an error
+  // response — the appointment is already safely in the database above.
+  sendAppointmentEmail({ name, phone, date, timeLabel, message }).catch(() => {});
 
   return NextResponse.json({ success: true, id: rows[0]?.id });
 }
