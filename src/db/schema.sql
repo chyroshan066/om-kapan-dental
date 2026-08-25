@@ -52,3 +52,25 @@ alter table gallery_images
 
 create index if not exists gallery_images_category_idx
   on gallery_images (category);
+
+create table if not exists doctors (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  qualification text not null,
+  nmc_no text not null,
+  -- Cloudinary-hosted photo, same upload path as gallery_images: img is
+  -- the delivered URL, public_id is Cloudinary's asset identifier needed
+  -- to delete the actual file when the doctor is removed or their photo
+  -- is replaced.
+  img text not null,
+  public_id text not null,
+  -- Controls display order in the "Meet our Dentists" carousel. New
+  -- doctors are appended to the end (see the POST route); reordering is
+  -- done in bulk via the reorder route, which rewrites this column for
+  -- every row to match the admin's chosen order.
+  display_order integer not null default 0,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists doctors_display_order_idx
+  on doctors (display_order, created_at);

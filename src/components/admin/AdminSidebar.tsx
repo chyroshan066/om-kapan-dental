@@ -3,12 +3,19 @@
 import { useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { SquaresFour, CalendarCheck, Images, X } from "@phosphor-icons/react";
+import {
+  SquaresFour,
+  CalendarCheck,
+  Images,
+  IdentificationBadge,
+  X,
+} from "@phosphor-icons/react";
 import { useClickOutside } from "@/hooks/useClickOutside";
 
 const NAV_ITEMS = [
   { name: "Dashboard", href: "/admin/dashboard", icon: SquaresFour },
   { name: "Appointments", href: "/admin/appointments", icon: CalendarCheck },
+  { name: "Doctors", href: "/admin/doctors", icon: IdentificationBadge },
   { name: "Gallery", href: "/admin/gallery", icon: Images },
 ];
 
@@ -24,24 +31,6 @@ function SidebarNav({
       {NAV_ITEMS.map((item) => {
         const isActive = pathname === item.href;
         const Icon = item.icon;
-
-        // if (item.comingSoon) {
-        //   return (
-        //     <div
-        //       key={item.href}
-        //       title="Coming soon"
-        //       className="flex items-center justify-between gap-x-3 px-4 py-3 rounded-xl text-sm font-bold text-slate-400 cursor-not-allowed"
-        //     >
-        //       <span className="flex items-center gap-x-3">
-        //         <Icon className="w-5 h-5" weight="bold" />
-        //         {item.name}
-        //       </span>
-        //       <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-gray-100 text-slate-400">
-        //         Soon
-        //       </span>
-        //     </div>
-        //   );
-        // }
 
         return (
           <Link
@@ -85,16 +74,10 @@ export function AdminSidebar({ isMobileOpen, onClose }: AdminSidebarProps) {
   const pathname = usePathname();
   const mobileSidebarRef = useRef<HTMLElement>(null);
 
-  // Same hook DatePicker/TimePicker already use — detects clicks by
-  // comparing the actual event target against this ref, so it works
-  // regardless of any backdrop z-index/stacking-context uncertainty.
   useClickOutside(mobileSidebarRef, onClose, isMobileOpen);
 
   return (
     <>
-      {/* --- Desktop: always-visible, in normal document flow. Same
-          hidden/lg:flex pattern already proven to work in Header.tsx,
-          instead of toggling position:fixed via a responsive variant. --- */}
       <aside className="hidden md:flex w-64 shrink-0 flex-col bg-white border-r border-gray-100 px-4 py-6">
         <div className="mb-8">
           <SidebarBrand />
@@ -102,13 +85,6 @@ export function AdminSidebar({ isMobileOpen, onClose }: AdminSidebarProps) {
         <SidebarNav pathname={pathname} />
       </aside>
 
-      {/* --- Mobile: overlay backdrop + slide-in drawer, hidden entirely
-          above the md breakpoint. Uses the same left-offset slide
-          technique (not translate-x transform utilities) as Header.tsx's
-          mobile menu, since that's the pattern already proven to work
-          in this codebase. Closing on outside-click is handled by
-          useClickOutside above (via mobileSidebarRef) rather than this
-          backdrop's own onClick, so the backdrop is purely visual here. --- */}
       <div
         className={`${
           isMobileOpen ? "" : "hidden"

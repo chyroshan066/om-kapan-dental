@@ -5,5 +5,4 @@ export * from "./contacts";
 export * from "./services";
 export * from "./features";
 export * from "./testimonial";
-export * from "./doctors";
 export * from "./branches";

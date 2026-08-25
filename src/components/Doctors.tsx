@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useSectionFade } from "@/hooks/useSectionFade";
-import { DOCTORS } from "@/constants";
+import type { PublicDoctor } from "@/types/doctor";
 
 declare global {
   interface Window {
@@ -10,7 +10,17 @@ declare global {
   }
 }
 
-export const Doctors = () => {
+interface DoctorsProps {
+  // Fetched server-side (from the `doctors` table, ordered by
+  // display_order) by whichever page renders this component, and handed
+  // down as a prop — see the admin Doctors page for the same
+  // fetch-then-pass pattern. Replaces the old static DOCTORS import from
+  // constants/doctors.ts now that doctors are managed from the admin
+  // panel instead of hardcoded.
+  doctors: PublicDoctor[];
+}
+
+export const Doctors = ({ doctors }: DoctorsProps) => {
     const { ref, isVisible } = useSectionFade<HTMLElement>();
 
     // Refs to the actual DOM nodes for Swiper's root, pagination, and nav
@@ -139,7 +149,14 @@ export const Doctors = () => {
             window.removeEventListener("resize", equalizeCardHeights);
             swiperInstance?.destroy(true, true);
         };
-    }, []);
+    }, [doctors]);
+
+    if (doctors.length === 0) {
+        // Admin has deleted every doctor (or none exist yet). Rendering
+        // nothing here is preferable to rendering the section chrome
+        // (heading, empty carousel, dead pagination) around zero cards.
+        return null;
+    }
 
     return (
         <section
@@ -164,37 +181,26 @@ export const Doctors = () => {
                     depending on viewport. */}
                 <div className="swiper swiper-2" ref={containerRef}>
                     <div className="swiper-wrapper">
-                        {DOCTORS.map((doctor, index) => (
-                            <div key={index} className="swiper-slide h-auto !mb-0 p-2">
+                        {doctors.map((doctor, index) => (
+                            <div key={doctor.id} className="swiper-slide h-auto !mb-0 p-2">
                                 <div
                                     ref={(el) => {
                                         cardRefs.current[index] = el;
                                     }}
                                     className="flex h-full flex-col items-center text-center gap-y-3 bg-white border border-gray-100 rounded-3xl p-8 shadow-sm transition-all hover:shadow-2xl hover:shadow-slate-400/20 hover:-translate-y-1"
                                 >
-                                    {/* Photo frame. Source images will
-                                        eventually be uploaded freely via the
-                                        admin panel, so we can't assume a
-                                        consistent portrait headshot crop —
-                                        some are portrait, some landscape,
-                                        some (like the current placeholders)
-                                        aren't headshots at all. A circular
-                                        frame with object-cover center-crops
-                                        to fill the circle, which on a wide
-                                        landscape source cuts off most of the
-                                        image and can leave the actual
-                                        subject outside the visible circle
-                                        entirely.
-
-                                        Using a square frame with
-                                        object-contain instead guarantees the
-                                        *whole* image is always visible,
-                                        regardless of its orientation —
-                                        nothing gets cropped out. Any leftover
-                                        space (e.g. a landscape photo in a
-                                        square box) is filled by the frame's
-                                        own background rather than stretching
-                                        or cropping the photo. */}
+                                    {/* Photo frame. Source images are now
+                                        uploaded freely via the admin panel,
+                                        so we can't assume a consistent
+                                        portrait headshot crop — some are
+                                        portrait, some landscape. A square
+                                        frame with object-contain guarantees
+                                        the whole image is always visible,
+                                        regardless of orientation — nothing
+                                        gets cropped out. Any leftover space
+                                        is filled by the frame's own
+                                        background rather than stretching or
+                                        cropping the photo. */}
                                     <div className="w-28 h-28 rounded-2xl border-4 border-primary/10 bg-gray-100 overflow-hidden shrink-0 flex items-center justify-center">
                                         <img
                                             src={doctor.img}
@@ -216,7 +222,7 @@ export const Doctors = () => {
                                         </p>
                                     </div>
                                     <span className="mt-auto bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-full">
-                                        NMC No: {doctor.nmcNo}
+                                        NMC No: {doctor.nmc_no}
                                     </span>
                                 </div>
                             </div>
